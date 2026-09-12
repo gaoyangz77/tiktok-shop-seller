@@ -7,6 +7,9 @@ SKILL = ROOT / "skills/tiktok-shop-seller"
 
 
 class ContentTests(unittest.TestCase):
+    def test_standalone_skill_includes_license(self):
+        self.assertEqual((SKILL / "LICENSE").read_text(), (ROOT / "LICENSE").read_text())
+
     def test_frontmatter_and_entry_size(self):
         text = (SKILL / "SKILL.md").read_text()
         self.assertTrue(text.startswith("---\nname: tiktok-shop-seller\ndescription: "))
