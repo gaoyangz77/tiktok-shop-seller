@@ -1,6 +1,6 @@
 ---
 name: tiktok-shop-seller
-description: Operate a TikTok Shop through TK Copilot MCP. Use for customer service and buyer replies, creator/Affiliate conversations and samples, outreach campaigns, product publishing and editing, inventory, order exceptions, returns/refunds, and sales analysis. Also use to connect or troubleshoot TK Copilot MCP. Supports 店铺运营、客服、达人合作、商品、库存、订单 and 经营分析 without assuming a category or region.
+description: Operate a TikTok Shop through TK Copilot MCP. Use for customer service and buyer replies, creator/Affiliate conversations and samples, outreach campaigns, product publishing and editing, inventory, order exceptions, returns/refunds, and sales analysis. Also use to set up TK Copilot MCP for the first time (sign in, connect a TikTok Shop, turn on services, plans and payment), troubleshoot it, or manage Product Knowledge. Supports 店铺运营、客服、达人合作、商品、库存、订单 and 经营分析 without assuming a category or region.
 ---
 
 # TikTok Shop Seller
@@ -14,11 +14,15 @@ This Skill does not run a background agent or replace the platform's records.
 1. Read the merchant's `STORE.md` in the selected working directory if it exists.
    Missing values are unknown, not permission to invent shop facts or limits.
    A Git repository is optional; do not scaffold one just to answer a question.
-2. If tools are unavailable, follow
+2. First use, no connected shop, a service not turned on, or "upgrade required":
+   follow [getting started](references/foundations/getting-started.md).
+   For connection, login or website/Desktop session handoff requests, or if no
+   `tkcopilot` tools are reachable, follow
    [connection and authentication](references/foundations/connection-and-authentication.md).
    Installing files does not make tools appear in an already-running session.
-3. Resolve the shop using `ecom_list_shops`; use returned IDs, region and currency.
+3. For shop operations, resolve the shop using `ecom_list_shops`; use returned IDs, region and currency.
    Never select a shop solely from a remembered display name. Confirm ambiguous targets.
+   For authentication-only requests, stop at the requested login/connection verification.
 4. Select the business workflow below. Read only relevant references and local
    knowledge, not every workflow or every tool schema.
 5. Fetch current context, execute only authorized actions, verify the result,
@@ -35,13 +39,15 @@ A single workflow may use several servers; shared workflows have one owner.
 | Creator messages, sample decisions, campaigns, product explanation, follow-up | [Affiliate](references/affiliate/index.md) |
 | Publish a product | [Publish listings](references/product-management/publish-listings.md) |
 | Change product content, price or availability | [Revise listings](references/product-management/revise-listings.md) |
+| Write or link Product Knowledge (usage, Q&A, creative cases) | [Product Knowledge](references/product-management/manage-product-knowledge.md) |
 | Diagnose rejected or restricted listings | [Resolve listing issues](references/product-management/resolve-listing-issues.md) |
 | Assess stock, shortages and replenishment needs | [Stock and replenishment](references/inventory-management/assess-stock-and-replenishment.md) |
 | Investigate stock discrepancies | [Inventory discrepancies](references/inventory-management/investigate-inventory-discrepancies.md) |
 | Investigate undelivered buyer orders or creator samples | [Delivery exceptions](references/order-management/resolve-delivery-exceptions.md) |
 | Handle returns and refunds | [Returns and refunds](references/order-management/process-returns-and-refunds.md) |
 | Review store sales or explain a decline | [Sales review](references/store-performance/review-sales-performance.md), [sales decline](references/store-performance/investigate-sales-decline.md) |
-| Connect, log in or diagnose MCP | [Connection](references/foundations/connection-and-authentication.md) |
+| Sign up, connect a shop, turn on services, check plans or pay | [Getting started](references/foundations/getting-started.md) |
+| Connect MCP; use a website/Desktop login for MCP, or sign into Desktop after MCP | [Connection and login handoffs](references/foundations/connection-and-authentication.md) |
 | Add shop rules or product knowledge; decide what to save | [Workspace and data ownership](references/foundations/workspace-and-data-ownership.md) |
 
 ## Rules shared by every workflow
@@ -56,7 +62,9 @@ A single workflow may use several servers; shared workflows have one owner.
   the specific decision; do not invent a second local playbook.
 - **Least necessary context:** use backend-assembled inbox/work items first.
   Fetch missing details with atomic tools. Inspect live schemas through the host's
-  tool discovery/search; tool names here are lookup hints, not a frozen contract.
+  tool discovery; tool names here are lookup hints, not a frozen contract. Hosts
+  may defer MCP tools into a catalogue (Codex: search `ALL_TOOLS` through its
+  code-execution tool) instead of listing them; look tools up by name there.
   Host prefixes may differ. Do not dump the entire catalog into context.
 - **Explicit parameters:** supply required shop/entity/channel/revision values
   from actual results. No Desktop session context is assumed. Never guess IDs or

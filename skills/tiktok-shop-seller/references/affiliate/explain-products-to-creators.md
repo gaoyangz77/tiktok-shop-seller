@@ -5,7 +5,7 @@ Goal: turn approved product evidence into a useful creator answer or content bri
 1. Identify the creator's actual question and the exact shop/product/variant.
    Fetch the current product via the available product tool; use
    `affiliate_get_product` when its enriched context is helpful.
-2. Use published Product Knowledge returned by supported tools for usage instructions,
+2. Use published [Product Knowledge](../product-management/manage-product-knowledge.md) for usage instructions,
    Q&A and creative cases. Read only relevant local original manuals, approved FAQ
    evidence or historical videos/notes. Apply
    [knowledge ownership](../foundations/workspace-and-data-ownership.md).

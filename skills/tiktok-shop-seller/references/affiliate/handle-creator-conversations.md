@@ -11,7 +11,9 @@ business decision without replaying its orchestration in the client.
 3. Supplement only missing evidence using relationship, timeline, creator profile,
    contact state, product or sample tools. Distinguish creator ID, relationship ID,
    shop ID, product ID and sample record ID; they are not interchangeable.
-4. If beginning a work item, fetch with `input.dispatch: true`. Carry the returned
+4. If beginning a work item, fetch with `input.dispatch: true`. Only items with
+   `agentDispatchRecommended: true` are dispatched; items owned by a Desktop
+   computer (`AFFILIATE_DESKTOP_ASSIGNED`) are never dispatched here. Carry the returned
    immutable agenda snapshot and boundary/revision fields exactly into the resolution
    input. Do not invent them, persist them as a local source of truth, or dispatch
    an entire queue just to inspect it.

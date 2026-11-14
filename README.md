@@ -1,101 +1,92 @@
 # TikTok Shop Seller Skill
 
-用你自己的 Agent 运营 TikTok Shop。开源通用业务工作流，通过
-[TK Copilot](https://www.tkcopilot.com) 的 MCP 使用后端上下文与编排能力。
+用你自己的 Agent（WorkBuddy、Codex、Claude Code 等）运营 TikTok Shop，不需要下载
+[TK Copilot](https://www.tkcopilot.com) 客户端。开源的是通用业务工作流；店铺数据、
+后台编排和同步由 TK Copilot 托管的 MCP 服务提供。
 
-只发布 **Skill**，不是插件、店铺模板或本地运行的后端。
-不包含 TK Copilot 私有 Expert、内部运营规则、训练资料或店铺数据。
-Skill 源码采用 MIT 许可；托管 MCP 服务的可用性、账号权限与收费政策另行决定，
-开源许可不等于承诺所有托管能力永久免费。
+只发布 **Skill**，不是插件、店铺模板或本地运行的后端。不包含 TK Copilot 私有
+Expert、内部运营规则、训练资料或店铺数据。Skill 源码采用 MIT 许可；托管服务的
+账号、权限与收费和 TK Copilot 客户端一致，另行约定。
 
 ## 给卖家的入口
 
 把下面这句话和本仓库链接交给自己的 Agent：
 
-> 请安装这个仓库里的 tiktok-shop-seller Skill，只在我指定的店铺工作目录生效。
-> 先检查当前 Agent 的安装方式，再配置 TK Copilot MCP，并引导我在浏览器完成登录。
-> 不要把 token 写进聊天或仓库，也不要创建店铺数据镜像。
+> 请安装这个仓库里的 tiktok-shop-seller Skill，并添加 TK Copilot 的 MCP 连接
+> `https://api.rivonclaw.com/mcp`，然后引导我在浏览器里登录、绑定我的 TikTok 店铺。
+> 不要把 token 写进聊天或文件。
 
 仓库链接：<https://github.com/gaoyangz77/tiktok-shop-seller>
 
-首次安装仍可能需要宿主的项目信任确认、重载和浏览器授权。
-Skill 不会绕过这些步骤，也不能自行给当前会话热加载 MCP 工具。
-不熟悉 Git 的卖家不需要建立店铺 repo。
+首次安装后通常需要重新加载 Agent，并在浏览器里完成一次授权。Skill 不会绕过这些步骤。
 
-## 手动安装：Codex / Claude Code
+## 安装
 
-需要 Python 3.11+。将本仓库下载或 clone 到一个长期保留的目录。
-在仓库根目录执行，替换为自己的工作目录：
+Skill 就是一个文件夹：`skills/tiktok-shop-seller`（也可从 Releases 下载压缩包）。
+不需要 Python，也不需要运行任何脚本。
 
-```sh
-python3 skills/tiktok-shop-seller/scripts/install_skill.py --agent codex --project-dir /path/to/my-shop
-python3 skills/tiktok-shop-seller/scripts/setup_mcp.py --agent codex --project-dir /path/to/my-shop --dry-run
-python3 skills/tiktok-shop-seller/scripts/setup_mcp.py --agent codex --project-dir /path/to/my-shop
-python3 skills/tiktok-shop-seller/scripts/doctor.py
-```
+| 宿主 | 安装 Skill | 添加 MCP 并登录 |
+| --- | --- | --- |
+| WorkBuddy | Skills 界面导入文件夹或压缩包 | 设置 → MCP 添加远程 HTTP 服务 `tkcopilot`，地址 `https://api.rivonclaw.com/mcp`，在该界面完成授权 |
+| Codex | 放到 `<工作目录>/.agents/skills/tiktok-shop-seller` | `codex mcp add tkcopilot --url https://api.rivonclaw.com/mcp`，再 `codex mcp login tkcopilot --scopes mcp:shop` |
+| Claude Code | 放到 `<工作目录>/.claude/skills/tiktok-shop-seller` | `claude mcp add --transport http --scope project tkcopilot https://api.rivonclaw.com/mcp`，在 Claude Code 里用 `/mcp` 登录 |
 
-Claude Code 将 `--agent codex` 换成 `--agent claude`。安装器使用目录软链接，
-只影响指定项目，不修改全局配置。Windows 或不支持软链接的宿主可使用其 Skill 导入功能，
-或把完整 `skills/tiktok-shop-seller` 文件夹复制到宿主认可的技能目录。
+只需要这一条 MCP 连接，登录一次即可使用全部工具。旧的 `/mcp/shop-core`、
+`/mcp/customer-service`、`/mcp/affiliate` 地址已停用，请改成上面的地址。
+WorkBuddy 的完整登录与调用流程尚未实测；Codex 已实测。
+详见 [连接与登录](skills/tiktok-shop-seller/references/foundations/connection-and-authentication.md)。
 
-WorkBuddy 可从 Skills UI 导入该 Skill；配置脚本支持
-`--agent workbuddy --project-dir /path/to/my-shop`。
-实际 OAuth 兼容性需在对应版本中验证，不宣称所有 Agent 开箱即用。
-详见 [连接、OAuth 与排错](skills/tiktok-shop-seller/references/foundations/connection-and-authentication.md)。
+登录后，Agent 会按 [上手流程](skills/tiktok-shop-seller/references/foundations/getting-started.md)
+带你：绑定 TikTok 店铺 → 打开客服 / 达人服务 → 查看订阅 → 做第一件事。
 
-默认连接 production。测试环境为配置与 doctor 命令添加
-`--environment staging`；不要混用两个环境的账号/凭证。
-如已有同名配置，脚本会拒绝覆盖。切环境前请审查备份并手动移除/修改
-三个 `tkcopilot_*` 配置项，再重新运行；不要删除其他 MCP 配置。
+## 不装客户端能做什么
+
+- 能做：查看和回复买家消息、处理退货退款、处理达人消息与工作项、审样品、管理合作与推广计划、
+  发布和修改商品、查库存与 FBT、看经营数据、维护产品知识、绑定店铺、查看订阅并拿到付款链接。
+- 由你下指令时才做：没有客户端时不会 7×24 自动回复买家或自动处理达人；需要你让 Agent 去做。
+  想要无人值守的自动运行，使用 TK Copilot 客户端。
+- 已绑定客户端电脑的店铺：达人工作项由客户端处理，Agent 里只读；直接操作仍可用。
+- 暂不支持：上传产品知识里的图片和视频（需在客户端里完成）。
+
+Codex 会把较多的 MCP 工具放进按需加载的目录，并在发送、退款、修改、付款、绑店等会改变状态的
+操作前请你批准，这是正常的安全提示。
 
 ## 工作流架构
 
 ```text
 skills/tiktok-shop-seller/
 ├── SKILL.md
-├── scripts/                      # 项目级安装、配置与只读诊断
 └── references/
+    ├── foundations/              # 连接登录、上手流程、数据归属
     ├── customer-service/         # 买家回复、投诉与问题恢复
     ├── affiliate/                # 达人工作项、推广、样品、产品讲解
-    ├── product-management/       # 发布、编辑、商品问题
+    ├── product-management/       # 发布、编辑、商品问题、产品知识
     ├── inventory-management/     # 库存风险与差异
     ├── order-management/         # 配送异常、退货退款
-    ├── store-performance/        # 经营复盘与下滑诊断
-    └── foundations/              # 连接与数据边界
+    └── store-performance/        # 经营复盘与下滑诊断
 ```
 
-客服和 Affiliate 是主要编排场景；商品、库存和订单是共享运营能力；
-经营分析提供跨领域决策支持。按需要读取具体流程，不把所有 reference 一次加载。
-工作流与 MCP 多对多：买家未收货与达人样品未收到，都复用同一配送异常流程。
-并不假定当前 MCP 已提供仓库重发、FBT 入库写操作或 Product Knowledge 发布接口。
+客服和达人是主要编排场景；商品、库存和订单是共享运营能力；经营分析提供决策支持。
+按需要读取具体流程，不把所有 reference 一次加载。工作流与 MCP 工具多对多：
+买家未收货与达人样品未收到，都复用同一配送异常流程。
 
 ## 官方更新与本地定制
 
-- 官方 Skill 负责“怎么做”；商家的 STORE.md 负责“这家店允许什么、目标是什么”。
+- 官方 Skill 负责“怎么做”；你的 `STORE.md` 负责“这家店允许什么、目标是什么”。
 - 私有资料放在自己的工作目录，不放进本仓库，不修改官方流程来填写店铺政策。
-- 本地仅保留平台没有的补充资料、原始素材和未发布草稿。
-- 云端 Product Knowledge 已发布的内容不再维护一份可独立编辑的本地镜像。
-- 有 Git 需求的商家可使用独立 private repo；不是本仓库的 fork，没有模板合并问题。
+- 本地只保留平台没有的补充资料、原始素材和未发布草稿；已发布的产品知识以云端为准。
+- 有 Git 需求可使用独立的私有仓库，不要 fork 本仓库来存店铺数据。
 
-在干净的官方源码目录中 `git pull --ff-only`，审查更新并重载宿主。
-软链接安装无需重新复制；导入/复制安装需重新导入。私有工作目录不受影响。
-如果官方源码已有本地改动，先停下处理，不执行 reset/强制覆盖。
+更新时重新下载或 `git pull --ff-only`，然后在宿主里重新导入或重新加载。
 更多见 [工作目录与数据归属](skills/tiktok-shop-seller/references/foundations/workspace-and-data-ownership.md)。
 
-## 安全与测试
-
-配置器不保存 token、不发邮件、不登录、不运行店铺写操作；保留无关配置，
-同名冲突时拒绝覆盖，现有配置变更前生成权限受限的备份。不要提交这些备份。
-doctor 只检查公开授权元数据和未登录请求的 401 challenge；成功不代表已经登录，
-也不代表用户具有某家店铺的访问权限。
+## 测试
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
 ```
 
-测试覆盖配置保留/冲突/重复安装、OAuth canonical resource、诊断失败语义、
-工作流链接与安全边界。不调用真实店铺写接口。
-当前为早期版本：Codex 配置解析可本地验证；Claude Code / WorkBuddy 的
-实际登录与业务调用仍需要对应客户端验收。托管部署不可用时请停在诊断步骤。
+测试只检查 Skill 内容：链接可达、业务目录结构、安全与数据边界、上手流程的关键约束，
+以及只使用单一 `/mcp` 地址。不调用任何真实店铺接口。
 
 公开反馈请只提交脱敏信息，不上传订单、买家/达人消息、验证码、token 或完整配置。

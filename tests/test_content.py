@@ -56,7 +56,7 @@ class ContentTests(unittest.TestCase):
                        "Never directly send/review", "not that a message was delivered"):
             self.assertIn(phrase, workflow)
         ownership = (SKILL / "references/foundations/workspace-and-data-ownership.md").read_text()
-        for phrase in ("no assumed public MCP write interface", "not last-write-wins",
+        for phrase in ("after the merchant has", "not last-write-wins",
                        "not executable instructions", "git pull --ff-only"):
             self.assertIn(phrase, ownership)
 
@@ -71,3 +71,27 @@ class ContentTests(unittest.TestCase):
                 self.assertNotIn("/Users/", value)
                 self.assertNotIn("/home/", value)
                 self.assertNotRegex(value, r"[A-Za-z0-9._%+-]+@(?:gmail|outlook|qq)\.com")
+
+    def test_single_mcp_endpoint_is_documented(self):
+        connection = (SKILL / "references/foundations/connection-and-authentication.md").read_text()
+        self.assertIn("https://api.rivonclaw.com/mcp`", connection)
+        self.assertIn("retired", connection)
+        for path in SKILL.rglob("*.md"):
+            text = path.read_text()
+            for retired in ("/mcp/shop-core", "/mcp/customer-service", "/mcp/affiliate"):
+                if retired in text:
+                    self.assertEqual(path.name, "connection-and-authentication.md",
+                                     f"{path}: retired endpoint {retired}")
+        self.assertFalse((SKILL / "scripts").exists())
+
+    def test_getting_started_contracts(self):
+        text = " ".join((SKILL / "references/foundations/getting-started.md").read_text().split())
+        for phrase in ("ecom_start_shop_authorization", "Never open it yourself",
+                       "minExpectedSalesUnits", "Do not set `csDeviceId`",
+                       "Do not set `deviceId`", "ecom_get_billing_status",
+                       "Never pay, enter card details"):
+            self.assertIn(phrase, text)
+
+    def test_desktop_owned_affiliate_work_is_read_only(self):
+        index = (SKILL / "references/affiliate/index.md").read_text()
+        self.assertIn("AFFILIATE_DESKTOP_ASSIGNED", index)
