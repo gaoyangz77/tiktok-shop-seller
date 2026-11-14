@@ -252,7 +252,10 @@ website authentication in this flow.
 - 403 or "Upgrade required": entitlement, shop authorization or region
   restriction; never treat as an empty shop, empty inbox or zero inventory.
   See [getting started](getting-started.md#plans-and-payment).
-- Configured but tools absent: check login state, trust and the host's deferred
+- Configured but tools absent right after a session starts: the tool list loads
+  in the background. On the Mainland China line it can take 10–30 seconds; wait,
+  then look the tool up again before changing configuration or logging in again.
+- Still absent: check login state, trust and the host's deferred
   catalogue (above). A Skill reference cannot make an unavailable tool callable.
 - After MCP login, if verifying shop access is requested: first call only
   `ecom_list_shops`, confirm the intended shop, then one task-relevant read.

@@ -42,7 +42,8 @@ Skill 就是一个文件夹：`skills/tiktok-shop-seller`（也可从 Releases �
 | Codex | 放到 `<工作目录>/.agents/skills/tiktok-shop-seller` | `codex mcp add tkcopilot --url https://api.rivonclaw.com/mcp`，再 `codex mcp login tkcopilot --scopes mcp:shop` |
 | Claude Code | 放到 `<工作目录>/.claude/skills/tiktok-shop-seller` | `claude mcp add --transport http --scope project tkcopilot https://api.rivonclaw.com/mcp`，在 Claude Code 里用 `/mcp` 登录 |
 
-每条线路只需要这一条 MCP 连接，登录一次即可使用全部工具；新加的连接要重新开会话才会出现。旧的 `/mcp/shop-core`、
+每条线路只需要这一条 MCP 连接，登录一次即可使用全部工具；新加的连接要重新开会话才会出现。
+中国大陆线路跨境较慢，新会话开始后工具可能要 10–30 秒才加载完成，稍等再用即可。旧的 `/mcp/shop-core`、
 `/mcp/customer-service`、`/mcp/affiliate` 地址已停用，请改成上面的地址。
 WorkBuddy 的完整登录与调用流程尚未实测；Codex 已实测。
 详见 [连接与登录](skills/tiktok-shop-seller/references/foundations/connection-and-authentication.md)。
