@@ -11,8 +11,8 @@ TK Copilot Desktop app. Each step is a merchant decision; do not skip ahead.
 
 ## Sign in
 
-Follow [connection and authentication](connection-and-authentication.md) to add
-the `tkcopilot` MCP connection and log in. New merchants register on the TK
+Follow [connection and authentication](connection-and-authentication.md) to choose
+the line (Global or Mainland China), add the `tkcopilot` MCP connection and log in. New merchants register on the TK
 Copilot page that login opens; existing website or Desktop users sign in with
 the same account. Confirm with one `ecom_list_shops` call.
 
@@ -27,7 +27,8 @@ Needed when `ecom_list_shops` returns no shop, or the merchant wants another one
 2. Call `ecom_start_shop_authorization` with that `market`. It returns
    `authorizationUrl` and `expiresAt`.
 3. Give the link to the merchant immediately and ask them to open it in their
-   own browser, sign in to TikTok Shop there and approve. The link works once
+   own browser, sign in to TikTok Shop there and approve. The link is on the
+   website of the line in use (`www.tkcopilot.com` or `www.tkjiang.cn`). The link works once
    and expires in about five minutes. Never open it yourself and never ask for
    TikTok credentials or codes.
 4. If the merchant reports an expired or used link, call the tool again for a
@@ -75,6 +76,8 @@ until when (`validUntil`).
   `ECOM_CUSTOMER_SERVICE_UNLIMITED_MONTHLY`, `scopeType: SHOP` and the shop id.
   Ask whether they pay by card in USD (`provider: STRIPE`, returns
   `payment.checkoutUrl`) or in CNY (`provider: LAKALA`, returns a QR payload).
+  On the Mainland China line prefer LAKALA: after a Stripe payment the browser
+  returns to a page on the global website, which may not open there.
   Leave `successUrl` and `cancelUrl` unset.
 - Give the link or QR to the merchant to complete in their own browser or
   payment app. Never pay, enter card details, or open the link yourself.

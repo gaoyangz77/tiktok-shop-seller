@@ -73,8 +73,12 @@ class ContentTests(unittest.TestCase):
                 self.assertNotRegex(value, r"[A-Za-z0-9._%+-]+@(?:gmail|outlook|qq)\.com")
 
     def test_single_mcp_endpoint_is_documented(self):
-        connection = (SKILL / "references/foundations/connection-and-authentication.md").read_text()
+        connection = " ".join(
+            (SKILL / "references/foundations/connection-and-authentication.md").read_text().split())
         self.assertIn("https://api.rivonclaw.com/mcp`", connection)
+        self.assertIn("https://api.tkjiang.cn/mcp`", connection)
+        self.assertIn("is not evidence", connection)
+        self.assertIn("request approval", connection)
         self.assertIn("retired", connection)
         for path in SKILL.rglob("*.md"):
             text = path.read_text()
