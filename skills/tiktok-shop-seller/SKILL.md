@@ -26,7 +26,10 @@ This Skill does not run a background agent or replace the platform's records.
    Never select a shop solely from a remembered display name. Confirm ambiguous targets.
    For authentication-only requests, stop at the requested login/connection verification.
 4. Select the business workflow below. Read only relevant references and local
-   knowledge, not every workflow or every tool schema.
+   knowledge, not every workflow or every tool schema. If the request is
+   open-ended ("下一步", "继续"), offer the task list in
+   [getting started](references/foundations/getting-started.md#choose-what-to-work-on)
+   instead of choosing for the merchant.
 5. Fetch current context, execute only authorized actions, verify the result,
    and report completed, pending, failed and uncertain outcomes separately.
 

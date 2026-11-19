@@ -83,6 +83,11 @@ class ContentTests(unittest.TestCase):
         self.assertIn("immediately starts login", connection)
         self.assertIn("do not choose Allow", connection)
         self.assertIn("Do not reach the tools any other way", connection)
+        publish = " ".join((SKILL / "references/product-management/publish-listings.md").read_text().split())
+        for phrase in ("cannot create them or change their addresses", "紫鸟",
+                       "Never enter TikTok passwords or verification codes",
+                       "Before saving, show what will be saved"):
+            self.assertIn(phrase, publish)
         self.assertIn("ready-to-paste message in a fenced code block", connection)
         self.assertIn("Never make them write it themselves", connection)
         self.assertIn("retired", connection)
@@ -98,6 +103,7 @@ class ContentTests(unittest.TestCase):
         text = " ".join((SKILL / "references/foundations/getting-started.md").read_text().split())
         for phrase in ("ecom_start_shop_authorization", "never open it in a browser you control",
                        "Do not stop at \"connected\"", "do not work around it",
+                       "Never pick the task for them", "Show the whole list",
                        "minExpectedSalesUnits", "Do not set `csDeviceId`",
                        "Do not set `deviceId`", "ecom_get_billing_status",
                        "Never pay, enter card details"):

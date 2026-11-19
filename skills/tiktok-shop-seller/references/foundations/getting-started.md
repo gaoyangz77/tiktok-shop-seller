@@ -1,13 +1,15 @@
 # Getting started
 
 Goal: take a merchant from a fresh install to a first useful task, without the
-TK Copilot Desktop app. Each step is a merchant decision; do not skip ahead.
+TK Copilot Desktop app. Signing in and connecting a shop come first. After that
+the merchant chooses what to work on; services and payment come up only when
+the chosen task needs them.
 
 1. [Sign in](#sign-in)
 2. [Connect a TikTok Shop](#connect-a-tiktok-shop)
-3. [Turn on the services the merchant wants](#turn-on-services)
-4. [Plans and payment](#plans-and-payment)
-5. [First task](#first-task)
+3. [Choose what to work on](#choose-what-to-work-on)
+4. [Turn on services](#turn-on-services), only when the chosen task needs one
+5. [Plans and payment](#plans-and-payment), only when asked or blocked
 
 ## Sign in
 
@@ -49,11 +51,41 @@ Needed when `ecom_list_shops` returns no shop, or the merchant wants another one
    new shop by name and region. Historical data is synchronised in the
    background after authorization, so early reads may be incomplete; say so
    rather than reporting "no orders" or "no creators".
-6. Do not stop at "connected". Call `ecom_get_billing_status` for the new shop,
-   tell the merchant in plain words what is already allowed and until when (a
-   new account may already have a customer-service trial), and ask which
-   services to turn on now. Continue with [Turn on services](#turn-on-services)
-   for the ones they choose.
+6. Do not stop at "connected". Go on to
+   [Choose what to work on](#choose-what-to-work-on).
+
+## Choose what to work on
+
+Use this after a shop is connected, and whenever the merchant says something
+open-ended such as "下一步", "继续" or "接下来做什么" without a handoff message
+that names the task. Never pick the task for them, and do not steer them to
+turning on a service first.
+
+Call `ecom_get_billing_status` once and mention in one line what is already
+allowed and until when (a new account may have a customer-service trial). Then
+ask what they want to do first, offering the common TikTok Shop operations:
+
+| Option (merchant's words) | Needs a service turned on | Workflow |
+| --- | --- | --- |
+| 上新商品 | No | [Publish listings](../product-management/publish-listings.md) |
+| 改商品：价格、标题、图片、上下架 | No | [Revise listings](../product-management/revise-listings.md) |
+| 处理被拒或受限的商品 | No | [Resolve listing issues](../product-management/resolve-listing-issues.md) |
+| 看库存、缺货和补货 | No | [Stock and replenishment](../inventory-management/assess-stock-and-replenishment.md) |
+| 回复买家消息、处理投诉和差评 | Customer service | [Customer service](../customer-service/index.md) |
+| 处理退货退款 | No | [Returns and refunds](../order-management/process-returns-and-refunds.md) |
+| 查没发货或没送到的订单和样品 | No | [Delivery exceptions](../order-management/resolve-delivery-exceptions.md) |
+| 回复达人、审批样品申请 | Affiliate | [Affiliate](../affiliate/index.md) |
+| 找达人、发合作邀约 | Affiliate | [Affiliate](../affiliate/index.md) |
+| 看销售表现、查销量下滑原因 | No | [Sales review](../store-performance/review-sales-performance.md) |
+| 整理产品知识（使用说明、问答） | No | [Product Knowledge](../product-management/manage-product-knowledge.md) |
+
+Show the whole list. If the host's choice card holds only a few options, write
+the list as numbered text instead and let the merchant answer with a number or
+in their own words; anything else they name is fine too. When the chosen task
+needs a service that is off, explain that one service and offer to
+[turn it on](#turn-on-services) before starting. "Needs a service" here means
+TK Copilot must be recording that data; check the live result rather than this
+table if a tool reports a missing entitlement.
 
 ## Turn on services
 
@@ -104,15 +136,7 @@ until when (`validUntil`).
   needed here. The account-wide customer-service membership is arranged with
   TK Copilot directly and cannot be bought through this tool.
 
-## First task
-
-Suggest one concrete, read-first task that fits what was turned on, for example:
-
-- "Show buyers waiting for a reply and draft answers for me to review" —
-  [customer service](../customer-service/index.md).
-- "Show creator work that needs a decision" — [affiliate](../affiliate/index.md).
-- "Which products are close to running out of stock" —
-  [stock and replenishment](../inventory-management/assess-stock-and-replenishment.md).
+## After the first task
 
 Offer to record the merchant's answers (preferred tone, refund and sample
 limits) in `STORE.md` as described in
