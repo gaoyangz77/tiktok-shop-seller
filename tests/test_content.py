@@ -81,6 +81,8 @@ class ContentTests(unittest.TestCase):
         self.assertIn("requesting escalated permissions", connection)
         self.assertIn("Never hand the merchant a terminal command", connection)
         self.assertIn("immediately starts login", connection)
+        self.assertIn("do not choose Allow", connection)
+        self.assertIn("Do not reach the tools any other way", connection)
         self.assertIn("retired", connection)
         for path in SKILL.rglob("*.md"):
             text = path.read_text()
@@ -92,7 +94,8 @@ class ContentTests(unittest.TestCase):
 
     def test_getting_started_contracts(self):
         text = " ".join((SKILL / "references/foundations/getting-started.md").read_text().split())
-        for phrase in ("ecom_start_shop_authorization", "Never open it yourself",
+        for phrase in ("ecom_start_shop_authorization", "never open it in a browser you control",
+                       "Do not stop at \"connected\"", "do not work around it",
                        "minExpectedSalesUnits", "Do not set `csDeviceId`",
                        "Do not set `deviceId`", "ecom_get_billing_status",
                        "Never pay, enter card details"):

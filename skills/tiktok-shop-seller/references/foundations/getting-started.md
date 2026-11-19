@@ -12,11 +12,13 @@ TK Copilot Desktop app. Each step is a merchant decision; do not skip ahead.
 ## Sign in
 
 Follow [connection and authentication](connection-and-authentication.md): ask
-which line (Global or Mainland China), then connect and log in yourself; the
-merchant approves once and acts in the browser. New merchants register on the TK
-Copilot page that login opens; existing website or Desktop users sign in with
-the same account. In the new chat, confirm with one `ecom_list_shops` call and
-go straight on to connecting a shop if the list is empty.
+which line (Global or Mainland China) and whether they need a new account, then
+connect and log in yourself; the merchant approves once and acts in the browser.
+New merchants register on the TK Copilot website; existing website or Desktop
+users sign in with the same account. In the new chat, confirm with one
+`ecom_list_shops` call and go straight on to connecting a shop if the list is
+empty. If the tools are missing because the merchant stayed in the old chat,
+ask them to open a new one; do not work around it.
 
 ## Connect a TikTok Shop
 
@@ -28,17 +30,28 @@ Needed when `ecom_list_shops` returns no shop, or the merchant wants another one
    otherwise the default is local.
 2. Call `ecom_start_shop_authorization` with that `market`. It returns
    `authorizationUrl` and `expiresAt`.
-3. Give the link to the merchant immediately and ask them to open it in their
-   own browser, sign in to TikTok Shop there and approve. The link is on the
-   website of the line in use (`www.tkcopilot.com` or `www.tkjiang.cn`). The link works once
-   and expires in about five minutes. Never open it yourself and never ask for
-   TikTok credentials or codes.
-4. If the merchant reports an expired or used link, call the tool again for a
-   fresh one. Do not reuse an old link.
+3. Open the link at once in the merchant's default browser when the host can
+   (Codex on macOS: `open '<authorizationUrl>'`, with approval if the sandbox
+   blocks it), and also show it as a clickable link in case nothing opened. The
+   link is on the website of the line in use (`www.tkcopilot.com` or
+   `www.tkjiang.cn`), works once, and must be opened within about five minutes;
+   the TikTok sign-in that follows must finish within about ten minutes of the
+   link being created. Tell the merchant to sign in to TikTok Shop on that page
+   and approve now. Only the merchant's own browser may open it: never open it
+   in a browser you control (computer use, browser automation) and never ask
+   for TikTok credentials or codes.
+4. If the merchant reports an expired or used link, or comes back later than
+   that, call the tool again for a fresh one and open it the same way. Do not
+   reuse an old link.
 5. After the merchant says they finished, call `ecom_list_shops` and confirm the
    new shop by name and region. Historical data is synchronised in the
    background after authorization, so early reads may be incomplete; say so
    rather than reporting "no orders" or "no creators".
+6. Do not stop at "connected". Call `ecom_get_billing_status` for the new shop,
+   tell the merchant in plain words what is already allowed and until when (a
+   new account may already have a customer-service trial), and ask which
+   services to turn on now. Continue with [Turn on services](#turn-on-services)
+   for the ones they choose.
 
 ## Turn on services
 

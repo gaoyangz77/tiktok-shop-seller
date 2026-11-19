@@ -71,6 +71,8 @@ A single workflow may use several servers; shared workflows have one owner.
 - **Explicit parameters:** supply required shop/entity/channel/revision values
   from actual results. No Desktop session context is assumed. Never guess IDs or
   bypass missing MCP capabilities with private GraphQL or Desktop credentials.
+  If the tools are absent from this chat, ask for a new chat; never reach them
+  through another host process, a script or stored tokens.
 - **Writes:** a request to inspect is not a request to send, refund or edit.
   Follow the merchant's explicit task and approved limits. Confirm unresolved
   recipients, amounts, variants, destructive changes or commitments before writing.

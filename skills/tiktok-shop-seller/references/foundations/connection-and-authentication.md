@@ -44,8 +44,9 @@ MCP, configuration files or terminals.
 
 ## Add the MCP connection
 
-The agent does every step itself. The merchant only answers one question,
-approves the host's permission prompt, and acts in the browser. Never hand the
+The agent does every step itself. The merchant only answers one round of
+questions (line and account), approves the host's permission prompt, and acts in
+the browser. Never hand the
 merchant a terminal command or a settings screen to fill in while the agent
 can run the host's own command with approval. Report each result briefly in
 plain words.
@@ -61,7 +62,9 @@ There is one remote Streamable HTTP endpoint with every tool, on two lines:
 | Staging (global only) | `https://api-stg.rivonclaw.com/mcp` | `https://stg.tkcopilot.com` |
 
 Ask the merchant whether they are in mainland China without a VPN, or whether
-their browser opens `https://www.tkcopilot.com`. Use the Mainland China line if
+their browser opens `https://www.tkcopilot.com`. In the same round, ask whether
+they already have a TK Copilot account (website or Desktop) or need a new one;
+the answer decides what you tell them before login (step 2). Use the Mainland China line if
 they are in mainland China or cannot open it; otherwise use Global. A failed
 network probe from the agent is not evidence: sandboxed agent shells (Codex by
 default) cannot reach the internet at all, wherever the merchant is.
@@ -79,10 +82,18 @@ the OAuth resource is the MCP URL itself.
 
 Before running anything, tell the merchant in one or two sentences what will
 happen: the host asks permission to connect TK Copilot; then a browser page
-opens where they register (new) or sign in (existing account) and choose
-**Allow Agent access**. If the browser is already signed in to a different TK
-Copilot account, they sign out on the website first; the page has no account
-switcher.
+opens where they choose **Allow Agent access**. The page has no account
+switcher and may already show an account this browser signed in to earlier, so
+say what to check, based on their answer:
+
+- **New account:** if the page shows any signed-in account, do not choose
+  Allow; sign out on the website, register with their own email, then come
+  back to the page (or let the agent start login again).
+- **Existing account:** check that the email on the page is the account they
+  mean to use before choosing Allow; if not, sign out and sign in with it.
+
+If they approved the wrong account anyway, log the host out
+(`codex mcp logout tkcopilot`) and start login again after they switch accounts.
 
 - **Codex:** run `codex mcp add tkcopilot --url <MCP URL>` yourself, requesting
   escalated permissions (it writes the user configuration and needs network;
@@ -122,6 +133,14 @@ in one sentence, to open a new chat and say something short such as "绑店" or
 "开始". Do not ask them to copy a long instruction. In the new chat, follow
 [getting started](getting-started.md).
 
+Merchants often keep typing in the same chat anyway. When a request needs
+`tkcopilot` tools and this chat has none (look the tool up once, as described
+below), say in one sentence that the connection only shows up in a new chat and
+ask them to open one. Do not reach the tools any other way: no second host
+process (for example `codex app-server`), no script that calls the MCP
+endpoint, no reuse of stored tokens. Those paths skip the host's approval
+prompts for tools that send, refund, edit or pay, and work in one host only.
+
 ## Find and approve tools in the host
 
 - The catalogue is large (about 90 tools). Hosts may defer MCP tools instead of
@@ -135,7 +154,8 @@ in one sentence, to open a new chat and say something short such as "绑店" or
   and let the merchant approve it in the host. Never work around the prompt.
 - If no `tkcopilot` tools are reachable at all, check the connection status in
   the host (`codex mcp list` shows `OAuth` once logged in) before concluding
-  that a capability does not exist.
+  that a capability does not exist. Connected but absent in this chat means a
+  new chat is needed ([step 3](#3-new-chat)), never a workaround.
 
 ## Choose a login flow
 
