@@ -128,15 +128,40 @@ servers. Use staging only for a staging account.
 
 ### 3. New chat
 
-New MCP tools never appear in the chat that added them. Tell the merchant,
-in one sentence, to open a new chat and say something short such as "绑店" or
-"开始". Do not ask them to copy a long instruction. In the new chat, follow
-[getting started](getting-started.md).
+New MCP tools never appear in the chat that added them. Tell the merchant, in
+one sentence, to open a new chat and paste the handoff message you wrote for
+them (below). Never make them write it themselves: a merchant left without one
+types "继续" or "推进下一步", and the new chat has to rediscover everything. In
+the new chat, follow [getting started](getting-started.md).
+
+#### Handoff message
+
+Whenever you ask the merchant to open a new chat, for any reason, end your reply
+with a ready-to-paste message in a fenced code block so it copies in one click.
+Write it in the merchant's language, as the merchant speaking, and keep it to
+about six lines:
+
+- the goal and the line in use (for example "国际线路");
+- what is already done and confirmed, with the shop name and region when known;
+- what is waiting on the merchant's decision, if anything;
+- the one next step to take;
+- "先用工具核对当前状态再动手" so the new chat re-reads live facts instead of
+  trusting the message.
+
+Leave out tokens, authorization or payment links, codes, buyer or creator
+personal data and anything from `STORE.md` the new chat can read itself.
+Example after connecting:
+
+```text
+我用 tiktok-shop-seller 运营 TikTok 店铺，TK Copilot 国际线路已连接并登录（新注册账号）。
+还没有绑定店铺。下一步：帮我绑定美国站本土店。先用工具核对当前状态再动手。
+```
 
 Merchants often keep typing in the same chat anyway. When a request needs
 `tkcopilot` tools and this chat has none (look the tool up once, as described
 below), say in one sentence that the connection only shows up in a new chat and
-ask them to open one. Do not reach the tools any other way: no second host
+ask them to open one, with a [handoff message](#handoff-message) for the task
+they just asked for. Do not reach the tools any other way: no second host
 process (for example `codex app-server`), no script that calls the MCP
 endpoint, no reuse of stored tokens. Those paths skip the host's approval
 prompts for tools that send, refund, edit or pay, and work in one host only.

@@ -83,6 +83,8 @@ class ContentTests(unittest.TestCase):
         self.assertIn("immediately starts login", connection)
         self.assertIn("do not choose Allow", connection)
         self.assertIn("Do not reach the tools any other way", connection)
+        self.assertIn("ready-to-paste message in a fenced code block", connection)
+        self.assertIn("Never make them write it themselves", connection)
         self.assertIn("retired", connection)
         for path in SKILL.rglob("*.md"):
             text = path.read_text()

@@ -18,7 +18,9 @@ New merchants register on the TK Copilot website; existing website or Desktop
 users sign in with the same account. In the new chat, confirm with one
 `ecom_list_shops` call and go straight on to connecting a shop if the list is
 empty. If the tools are missing because the merchant stayed in the old chat,
-ask them to open a new one; do not work around it.
+ask them to open a new one with a
+[handoff message](connection-and-authentication.md#handoff-message); do not
+work around it.
 
 ## Connect a TikTok Shop
 

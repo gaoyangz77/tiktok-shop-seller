@@ -16,7 +16,8 @@ Expert、内部运营规则、训练资料或店铺数据。Skill 源码采用 M
 
 接下来 Agent 会自己完成连接：问你是否在中国大陆、是新注册还是已有账号，弹出一次权限请求让你批准，
 然后打开浏览器让你注册或登录 TK Copilot 并点「Allow Agent access」。完成后按提示**新开一个
-聊天**（工具只在新聊天里出现），说「绑店」即可。全程不需要命令行，也不需要自己填设置。
+聊天**（工具只在新聊天里出现），把 Agent 写好的那段交接话直接粘贴进去即可。全程不需要命令行，
+也不需要自己填设置或自己写提示词。
 
 **给 Agent：** 装完 Skill 不要停在“已安装”。同一轮里接着按
 [连接说明](skills/tiktok-shop-seller/references/foundations/connection-and-authentication.md#add-the-mcp-connection)

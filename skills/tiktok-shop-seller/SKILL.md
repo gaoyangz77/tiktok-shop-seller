@@ -73,6 +73,9 @@ A single workflow may use several servers; shared workflows have one owner.
   bypass missing MCP capabilities with private GraphQL or Desktop credentials.
   If the tools are absent from this chat, ask for a new chat; never reach them
   through another host process, a script or stored tokens.
+- **New chats:** whenever you ask the merchant to open a new chat, end with a
+  ready-to-paste [handoff message](references/foundations/connection-and-authentication.md#handoff-message)
+  (done, waiting on them, next step). Never leave them to write it.
 - **Writes:** a request to inspect is not a request to send, refund or edit.
   Follow the merchant's explicit task and approved limits. Confirm unresolved
   recipients, amounts, variants, destructive changes or commitments before writing.
