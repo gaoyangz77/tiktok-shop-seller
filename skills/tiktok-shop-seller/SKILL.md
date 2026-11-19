@@ -19,6 +19,8 @@ This Skill does not run a background agent or replace the platform's records.
    For connection, login or website/Desktop session handoff requests, or if no
    `tkcopilot` tools are reachable, follow
    [connection and authentication](references/foundations/connection-and-authentication.md).
+   Right after installing this Skill, go straight on to connecting in the same
+   turn; the merchant only approves prompts and acts in the browser.
    Installing files does not make tools appear in an already-running session.
 3. For shop operations, resolve the shop using `ecom_list_shops`; use returned IDs, region and currency.
    Never select a shop solely from a remembered display name. Confirm ambiguous targets.

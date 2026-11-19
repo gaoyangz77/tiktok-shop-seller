@@ -11,10 +11,12 @@ TK Copilot Desktop app. Each step is a merchant decision; do not skip ahead.
 
 ## Sign in
 
-Follow [connection and authentication](connection-and-authentication.md) to choose
-the line (Global or Mainland China), add the `tkcopilot` MCP connection and log in. New merchants register on the TK
+Follow [connection and authentication](connection-and-authentication.md): ask
+which line (Global or Mainland China), then connect and log in yourself; the
+merchant approves once and acts in the browser. New merchants register on the TK
 Copilot page that login opens; existing website or Desktop users sign in with
-the same account. Confirm with one `ecom_list_shops` call.
+the same account. In the new chat, confirm with one `ecom_list_shops` call and
+go straight on to connecting a shop if the list is empty.
 
 ## Connect a TikTok Shop
 

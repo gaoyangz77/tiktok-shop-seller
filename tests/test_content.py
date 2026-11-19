@@ -78,7 +78,9 @@ class ContentTests(unittest.TestCase):
         self.assertIn("https://api.rivonclaw.com/mcp`", connection)
         self.assertIn("https://api.tkjiang.cn/mcp`", connection)
         self.assertIn("is not evidence", connection)
-        self.assertIn("request approval", connection)
+        self.assertIn("requesting escalated permissions", connection)
+        self.assertIn("Never hand the merchant a terminal command", connection)
+        self.assertIn("immediately starts login", connection)
         self.assertIn("retired", connection)
         for path in SKILL.rglob("*.md"):
             text = path.read_text()

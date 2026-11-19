@@ -10,15 +10,17 @@ Expert、内部运营规则、训练资料或店铺数据。Skill 源码采用 M
 
 ## 给卖家的入口
 
-把下面这句话和本仓库链接交给自己的 Agent：
+对自己的 Agent 说一句就够了：
 
-> 请安装这个仓库里的 tiktok-shop-seller Skill，按 Skill 的说明帮我配置 TK Copilot 的 MCP 连接，
-> 然后引导我在浏览器里登录、绑定我的 TikTok 店铺。不要把 token 写进聊天或文件。
+> 帮我装这个 skill：https://github.com/gaoyangz77/tiktok-shop-seller
 
-Agent 会先问你是否在中国大陆，选好线路后用宿主自己的命令添加连接；你只需要在弹窗里批准、
-重新开一个会话，再在浏览器里点一次允许。
+接下来 Agent 会自己完成连接：问你一句是否在中国大陆，弹出一次权限请求让你批准，
+然后打开浏览器让你注册或登录 TK Copilot 并点「Allow Agent access」。完成后按提示新开一个
+聊天，说「绑店」即可。全程不需要命令行，也不需要自己填设置。
 
-仓库链接：<https://github.com/gaoyangz77/tiktok-shop-seller>
+**给 Agent：** 装完 Skill 不要停在“已安装”。同一轮里接着按
+[连接说明](skills/tiktok-shop-seller/references/foundations/connection-and-authentication.md#add-the-mcp-connection)
+为卖家建立 `tkcopilot` 连接并登录（Codex 由你带权限运行 `codex mcp add`，它会直接拉起浏览器授权）。
 
 首次安装后通常需要重新加载 Agent，并在浏览器里完成一次授权。Skill 不会绕过这些步骤。
 
@@ -39,7 +41,7 @@ Skill 就是一个文件夹：`skills/tiktok-shop-seller`（也可从 Releases �
 | 宿主 | 安装 Skill | 添加 MCP 并登录 |
 | --- | --- | --- |
 | WorkBuddy | Skills 界面导入文件夹或压缩包 | 设置 → MCP 添加远程 HTTP 服务 `tkcopilot`，地址 `https://api.rivonclaw.com/mcp`，在该界面完成授权 |
-| Codex | 放到 `<工作目录>/.agents/skills/tiktok-shop-seller` | `codex mcp add tkcopilot --url https://api.rivonclaw.com/mcp`，再 `codex mcp login tkcopilot --scopes mcp:shop` |
+| Codex | 放到 `<工作目录>/.agents/skills/tiktok-shop-seller` | `codex mcp add tkcopilot --url https://api.rivonclaw.com/mcp`（会直接拉起浏览器登录；已添加但未登录时用 `codex mcp login tkcopilot --scopes mcp:shop`） |
 | Claude Code | 放到 `<工作目录>/.claude/skills/tiktok-shop-seller` | `claude mcp add --transport http --scope project tkcopilot https://api.rivonclaw.com/mcp`，在 Claude Code 里用 `/mcp` 登录 |
 
 每条线路只需要这一条 MCP 连接，登录一次即可使用全部工具；新加的连接要重新开会话才会出现。

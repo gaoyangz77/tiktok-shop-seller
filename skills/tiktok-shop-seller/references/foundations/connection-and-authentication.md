@@ -6,7 +6,7 @@ Setup points the merchant's agent at a hosted service; it does not deploy a serv
 Read the relevant section:
 
 - [Install the Skill](#install-the-skill)
-- [Add the MCP connection](#add-the-mcp-connection): choose the line, add, reload, log in
+- [Add the MCP connection](#add-the-mcp-connection): choose the line, connect and log in, new chat
 - [Find and approve tools in the host](#find-and-approve-tools-in-the-host)
 - [Choose a login flow](#choose-a-login-flow)
   - [Website already signed in](#website-session-to-mcp)
@@ -33,13 +33,22 @@ repository or its release archive. Nothing has to be built or executed.
   its flow is verified.
 
 Prefer one project directory per merchant workspace. Do not change unrelated
-global settings. A Skill cannot register tools in an already-running session:
-the host must be reloaded or a new session started after installation.
+global settings. Codex's built-in skill installer places Skills under
+`~/.codex/skills`; that is fine.
+
+Installing is not the end of the task. In the same turn, check whether a
+`tkcopilot` connection exists and is logged in (`codex mcp list` in Codex) and,
+if not, continue with [Add the MCP connection](#add-the-mcp-connection) without
+waiting for the merchant to ask "what next". The merchant may know nothing about
+MCP, configuration files or terminals.
 
 ## Add the MCP connection
 
-The agent sets the connection up itself; the merchant approves the host's
-prompts. Do the steps in order and report each result.
+The agent does every step itself. The merchant only answers one question,
+approves the host's permission prompt, and acts in the browser. Never hand the
+merchant a terminal command or a settings screen to fill in while the agent
+can run the host's own command with approval. Report each result briefly in
+plain words.
 
 ### 1. Choose the line
 
@@ -63,46 +72,54 @@ both lines at once. Older per-area URLs (`/mcp/shop-core`,
 `/mcp/customer-service`, `/mcp/affiliate`) are retired and answer 410 with the
 current URL; replace any configuration that still uses them.
 
-### 2. Add the connection
+### 2. Connect and log in in one step
 
-Name it `tkcopilot`; OAuth scope `mcp:shop`; the OAuth resource is the MCP URL
-itself. Use the host's own command and let the host ask the merchant to approve
-it. Hosts protect their configuration on purpose: Codex will not let a
-sandboxed command write `.codex/` or the user configuration, so request
-approval (escalation) for the command instead of writing files around it.
+Name the connection `tkcopilot`; OAuth scope `mcp:shop` (the server's default);
+the OAuth resource is the MCP URL itself.
 
-- Codex: `codex mcp add tkcopilot --url <MCP URL>` (user-wide). For one project
-  instead, the merchant can add to `<workspace>/.codex/config.toml`:
+Before running anything, tell the merchant in one or two sentences what will
+happen: the host asks permission to connect TK Copilot; then a browser page
+opens where they register (new) or sign in (existing account) and choose
+**Allow Agent access**. If the browser is already signed in to a different TK
+Copilot account, they sign out on the website first; the page has no account
+switcher.
 
-  ```toml
-  [mcp_servers.tkcopilot]
-  url = "<MCP URL>"
-  scopes = ["mcp:shop"]
-  ```
+- **Codex:** run `codex mcp add tkcopilot --url <MCP URL>` yourself, requesting
+  escalated permissions (it writes the user configuration and needs network;
+  a sandboxed run fails). One approval covers the whole step: when the server
+  supports OAuth, this command immediately starts login and opens the
+  browser. It keeps running until the merchant finishes in the browser, so
+  start it, then keep polling its output (a few minutes is normal) until it
+  exits; do not kill it or start a second login meanwhile.
+  - Already added but not logged in (`codex mcp list` shows `tkcopilot`
+    without `OAuth`): run `codex mcp login tkcopilot --scopes mcp:shop` the same
+    way.
+  - Added with a wrong or retired URL: `codex mcp remove tkcopilot`, then add it
+    again as above.
+  - The merchant declines the permission prompt: stop, explain that the
+    connection cannot be made without it, and ask whether to try again.
+  - A project-only connection is possible in `<workspace>/.codex/config.toml`
+    (`[mcp_servers.tkcopilot]`, `url`, `scopes = ["mcp:shop"]`), but the agent
+    cannot write it from the sandbox and the project must be trusted; prefer
+    the command above.
+- **Claude Code:** `claude mcp add --transport http --scope project tkcopilot <MCP URL>`
+  (writes `.mcp.json`); the merchant then authenticates `tkcopilot` with `/mcp`.
+- **WorkBuddy:** Settings → MCP, add a remote HTTP server named `tkcopilot` with
+  the MCP URL, or project file `.workbuddy/mcp.json`:
+  `{"mcpServers": {"tkcopilot": {"type": "http", "url": "<MCP URL>"}}}`, then
+  complete OAuth from the MCP settings screen. This flow has not yet been
+  verified end to end.
 
-  The project must be trusted before Codex reads it; do not bypass that prompt.
-- Claude Code: `claude mcp add --transport http --scope project tkcopilot <MCP URL>`
-  (writes `.mcp.json`).
-- WorkBuddy: Settings → MCP, add a remote HTTP server named `tkcopilot` with the
-  MCP URL, or project file `.workbuddy/mcp.json`:
-  `{"mcpServers": {"tkcopilot": {"type": "http", "url": "<MCP URL>"}}}`.
-  This flow has not yet been verified end to end.
+Success is the host reporting the login finished (Codex prints a success line
+and `codex mcp list` shows `OAuth`), not the browser page alone. Never paste
+existing configuration contents into chat, and do not edit or remove other MCP
+servers. Use staging only for a staging account.
 
-Never paste existing configuration contents into chat, and do not edit or
-remove other MCP servers. Use staging only for a staging account.
+### 3. New chat
 
-### 3. Reload, then log in
-
-New MCP tools never appear in the session that added them. Ask the merchant to
-start a new session (or reload the host), then log in:
-
-- Codex: `codex mcp login tkcopilot --scopes mcp:shop` (opens the browser; run it
-  with the merchant's approval, or ask them to run it).
-- Claude Code: `/mcp` inside Claude Code, then authenticate `tkcopilot`.
-- WorkBuddy: complete OAuth from the MCP settings screen.
-
-The browser opens the TK Copilot consent page for the chosen line; the merchant
-signs in there and chooses **Allow Agent access**. Then continue with
+New MCP tools never appear in the chat that added them. Tell the merchant,
+in one sentence, to open a new chat and say something short such as "绑店" or
+"开始". Do not ask them to copy a long instruction. In the new chat, follow
 [getting started](getting-started.md).
 
 ## Find and approve tools in the host
