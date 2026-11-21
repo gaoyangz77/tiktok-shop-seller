@@ -53,6 +53,10 @@ offer the merchant two ways:
    let the merchant handle it. If the page does not match what you expect,
    stop and ask instead of guessing.
 
+   The consent covers this warehouse step only. Once it is saved, leave the
+   browser and continue with tools; do not use it to look for listing pages,
+   drafts or other settings.
+
 Either way, run the prerequisite check again afterwards and continue only when
 it passes.
 

@@ -76,6 +76,13 @@ A single workflow may use several servers; shared workflows have one owner.
   bypass missing MCP capabilities with private GraphQL or Desktop credentials.
   If the tools are absent from this chat, ask for a new chat; never reach them
   through another host process, a script or stored tokens.
+- **Tools first:** do everything a `tkcopilot` tool supports through the tool.
+  Use computer use or browser automation only for a step that has no tool
+  (today: warehouse setup, see
+  [publish listings](references/product-management/publish-listings.md#shop-setup-the-api-cannot-change)),
+  with the merchant's consent for that step, and go back to tools as soon as it
+  is done. When a tool fails, report the error and what it blocks; never switch
+  to Seller Center or another UI to get around it.
 - **New chats:** whenever you ask the merchant to open a new chat, end with a
   ready-to-paste [handoff message](references/foundations/connection-and-authentication.md#handoff-message)
   (done, waiting on them, next step). Never leave them to write it.

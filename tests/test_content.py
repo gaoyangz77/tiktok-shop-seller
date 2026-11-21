@@ -86,7 +86,8 @@ class ContentTests(unittest.TestCase):
         publish = " ".join((SKILL / "references/product-management/publish-listings.md").read_text().split())
         for phrase in ("cannot create them or change their addresses", "紫鸟",
                        "Never enter TikTok passwords or verification codes",
-                       "Before saving, show what will be saved"):
+                       "Before saving, show what will be saved",
+                       "The consent covers this warehouse step only"):
             self.assertIn(phrase, publish)
         self.assertIn("ready-to-paste message in a fenced code block", connection)
         self.assertIn("Never make them write it themselves", connection)
