@@ -9,7 +9,9 @@ Goal: create an authorized listing from merchant-supplied product facts.
    dependent; do not use a hard-coded universal payload. If the prerequisite
    check fails on shop setup (for example the shipping or return warehouse),
    follow [shop setup the API cannot change](#shop-setup-the-api-cannot-change)
-   before preparing the listing.
+   before preparing the listing. For a branded product, read
+   [brands and trademarks](#brands-and-trademarks) before telling the merchant
+   that anything brand-related is missing.
 3. Select the actual warehouse if inventory is included. Never invent a warehouse,
    brand, certification, SKU or stock figure.
 4. Prepare only the needed listing draft. If the merchant wants to retain it locally,
@@ -25,6 +27,41 @@ Goal: create an authorized listing from merchant-supplied product facts.
 8. Verify the returned product ID and current publication/review state. Creation
    acceptance does not guarantee a live listing. After uncertain creation, search
    for the matching result before considering another create.
+
+## Brands and trademarks
+
+Three different things; never treat one as proof of another:
+
+- **Brand ID**: an entry in TikTok Shop's brand list (`ecom_get_product_brands`).
+  Anyone can find it; it proves neither a trademark nor permission to sell.
+- **Trademark registration**: the brand owner's registration in the shop's
+  market, held in that market's official register (US: USPTO, checked at
+  `tsdr.uspto.gov`). A pending application has a serial number, not a
+  registration number, and is not a registration.
+- **Shop authorization**: TikTok's approval for this shop to sell the brand
+  (`authorized_status` on the brand), granted after the seller submits proof in
+  Seller Center.
+
+What blocks a listing:
+
+- Unauthorized **non-T1** brand (`is_t1_brand: false`): a product can still be
+  created with that `brand_id`; the brand just is not shown to buyers. This is
+  not a blocker. Do not ask the merchant to obtain authorization merely to
+  list, and do not switch a branded product to "no brand" to avoid the check.
+- Unauthorized **T1** brand (`is_t1_brand: true`): products cannot be created
+  until the shop is authorized.
+
+Before suggesting brand authorization, an authorization letter, Official Shop
+or brand recognition, check the trademark yourself in the official register for
+the shop's market: the exact mark, the owner, the status (registered, not
+pending), the registration number and the registration expiry date. TikTok's
+brand qualification form requires the registration number and expiry date and
+does not accept a pending application. Report what you found. If the mark is
+not registered there, tell the merchant authorization is not possible yet, list
+under the rules above, and revisit after registration. Only then explain the
+letter: it is issued by the registered owner to the shop's registered legal
+entity, not its display name. Official Shop or brand recognition is a separate,
+stricter application; raise it only when the merchant asks.
 
 ## Shop setup the API cannot change
 

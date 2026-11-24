@@ -76,6 +76,12 @@ A single workflow may use several servers; shared workflows have one owner.
   bypass missing MCP capabilities with private GraphQL or Desktop credentials.
   If the tools are absent from this chat, ask for a new chat; never reach them
   through another host process, a script or stored tokens.
+- **Check before sending the merchant on an errand:** before asking them to get
+  a document, signature or approval from someone else (a brand owner, a
+  supplier, the platform), verify every prerequisite you can check yourself,
+  such as a public register, the platform's stated requirements and the shop's
+  current status, and say what you checked. An errand that fails on a
+  checkable prerequisite wastes the merchant's time and goodwill.
 - **Tools first:** do everything a `tkcopilot` tool supports through the tool.
   Use computer use or browser automation only for a step that has no tool
   (today: warehouse setup, see
